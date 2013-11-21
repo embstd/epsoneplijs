@@ -1,0 +1,13 @@
+OPEN  . Installation not user friendly.
+
+OPEN  . (FIXED?) No flow control on 6100L and 6200L yet.
+
+----- OBSOLETE ENTRIES -----
+FIXED . USB not supported.
+
+FIXED . Printing process not user friendly.
+
+FIXED . Can only do A4, 600dpi at the moment
+
+FIXED . Multiple-page print job currently broken. Only one-page
+        print job works.

@@ -1,0 +1,128 @@
+#!/bin/sh
+
+
+IJSPARMS=""
+
+# Start of printer selection part #########################################
+
+MODEL=EPL5900L
+  # possible values: EPL5700L, EPL5800L, EPL5900L, EPL6100L, EPL6200L
+  # default: none, you have to specify a printer!
+
+########################################### End of printer selection part #
+
+
+# Start of paper size selection part ######################################
+
+PAPERSIZE=a4
+  # possible values: a4, letter, legal ...
+  #                  The full list is available in the Use.htm file of
+  #                  the ghostscript documentation (see appendix).
+  # default: none, you have to specify a paper size!
+
+######################################## End of paper size selection part #
+
+
+# Start of options part ###################################################
+
+# ** 6100L and 6200L may not support all options. Please make sure to use the 
+# "safety" options before reporting any problem.
+
+
+DPI=300
+  # possible values: 300, Class600, 600, Class1200
+  # default: 600
+  # ** 6100L and 6200L should set this to 600 for safety. 
+  IJSPARMS="EplDpi=$DPI"
+
+RITECH=on
+  # possible values: on, off
+  # default: on
+  # ** 6100L and 6200L should set this to "off" for safety.
+  IJSPARMS="$IJSPARMS,EplRitech=$RITECH"
+
+DENSITY=3
+  # possible values: 1, 2, 3, 4, 5
+  # default: 3
+  IJSPARMS="$IJSPARMS,EplDensity=$DENSITY"
+
+TONERSAVE=on
+  # possible values: on, off
+  # default: off
+  # ** 6100L and 6200L should leave this to the default "off" for safety.
+  IJSPARMS="$IJSPARMS,EplTonerSave=$TONERSAVE"
+
+FLOWCONTROL=off
+  # either off, libusb (for USB), libieee1284 (for ParPort) or kernel
+  #   lp device name(e.g. "/dev/lp0" or "/dev/usb/lp0"). 
+  # default: off
+  # the "libusb" and usb device name option is only available if compiled
+  #              --with-libusb and --with-kernelusb respectively.
+  # the "libieee1284" and lp device name option is only available if compiled 
+  #              --with-libieee1284 and --with-kernel1284 respectively.
+  # there is also a "nowhere" option for development use.
+  IJSPARMS="$IJSPARMS,EplFlowControl=$FLOWCONTROL"
+
+PAPERTYPE=Normal
+  # Normal, Thick, Thicker, Transparency
+  # 0, 1, 2, 3 for thicker and thicker paper upto transparency
+  # default: 0 (Normal) - both names and numbers are accepted
+  IJSPARMS="$IJSPARMS,EplPaperType=$PAPERTYPE"
+
+COPIES=1
+  # Anything number bigger than or equal to 1
+  # default: 1
+  IJSPARMS="$IJSPARMS,EplCopies=$COPIES"
+
+##################################################### End of options part #
+
+
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+
+while true
+do
+	case "$1" in
+	-?*) OPTIONS="$OPTIONS $1" ;;
+	*)  break ;;
+	esac
+	shift
+done
+
+if [ $# -lt 1 -o $# -gt 2 ]; then
+	echo "Usage: `basename $0` [options...] (input.[e]ps|-) [output.epl|-]" 1>&2
+	exit 1
+fi
+
+infile="$1";
+
+if [ $# -eq 1 ]
+then
+	case "${infile}" in
+	  -)		outfile=- ;;
+	  *.eps)	base=`basename "${infile}" .eps`; outfile="${base}.epl" ;;
+	  *.ps)		base=`basename "${infile}" .ps`; outfile="${base}.epl" ;;
+	  *)		base=`basename "${infile}"`; outfile="${base}.epl" ;;
+	esac
+else
+	outfile="$2"
+fi
+
+echo
+echo -e "***** Printer: \"$MODEL\" *****"
+echo
+echo -e "***** Paper Size: \"$PAPERSIZE\" *****"
+echo
+echo -e "***** using parameters: \"$IJSPARMS\" *****"
+echo
+
+exec gs -sPAPERSIZE=$PAPERSIZE -dFIXEDMEDIA \
+-sProcessColorModel=DeviceGray -dBitsPerSample=1 \
+-sDEVICE=ijs -sIjsServer=ijs_server_epsonepl \
+-sDeviceManufacturer=Epson -sDeviceModel=$MODEL \
+-sIjsParams="$IJSPARMS" \
+-dIjsUseOutputFD \
+-dNOPAUSE -dSAFER -dBATCH \
+-sOutputFile=$outfile $infile

@@ -1,0 +1,230 @@
+2006-04-15: cvs - Hin-Tak Leung
+   . Solaris 10 related changes, may also work with solaris 9
+     and earlier.
+	
+2005-09-06: cvs - Hin-Tak Leung
+   . 5700L error interpretation improvements
+   . commented on multiple copies limited to 255
+
+2005-04-08: cvs - Hin-Tak Leung
+   . Adding EplPaperType and EplCopies to everywhere
+   . except cups/foomatic related areas.
+	
+2004-11-28: cvs - Hin-Tak Leung
+   . missed HAVE_NULLTRANS in turning on the USE_FLOWCONTROL code.
+	
+2004-09-29: cvs - Hin-Tak Leung
+   . Adding "Printer Memory Low" message to the bottom of an abort,
+     rather than just blank.
+   . Impose 2,000,000 byte restriction per page only for the 5700L.
+	
+2004-09-25: cvs - Hin-Tak Leung
+   . more work on "print as much as possible on low mem".	
+	
+2004-09-23: cvs - Hin-Tak Leung
+   . Documentation and script addition about flowcontrol=nowhere
+   . rough work on "print as much as possible on low mem". Also
+     checking in new postscript code for turning on well-tempered
+     screening in ghostscript 8.00+.
+	
+2004-09-16: cvs - Hin-Tak Leung
+   . A lot of 6200L-read interpretation updates; switch 6100L to use
+     6200L read interpretation.
+   . abort compilation on any warning.
+   . finish long-overdue nowhere-bid write functionality for
+     similating mis-understood/failed read.
+   . a lot of fixes with buggy read/polling.
+   . relaxed b/w restriction in preparation for future 
+     dithering improvements.
+
+2004-09-13: cvs - Hin-Tak Leung
+   . x86_64 platform issue: shared libraries requires -fPIC
+     to build. Removed libijs.so and the original ijs*example* targets
+     from makefiles. We link statically with libieee1284 or libusb
+     as always, so there is no need to do anything about these two.
+	
+2004-06-18: cvs - Hin-Tak Leung
+   . update IJS component to 0.35
+	
+2004-06-02: cvs - Hin-Tak Leung
+   . ppc 'unsigned char'/x86 'signed char' fix in epl_compress.c
+	
+2004-04-11: cvs - Hin-Tak Leung
+   . 6200L bug. 
+
+2004-01-16: cvs - Hin-Tak Leung
+   . Sync with linuxprinting.org and correcting XML files to 
+     address cups compatibility issues.
+
+2004-01-14: cvs - Hin-Tak Leung
+   . Added user-contributed foomatic install script for Debian.
+
+2003-12-02: cvs - Hin-Tak Leung
+   . Adding 6200L - just making it do 6100L stuff for the time being.
+	
+2003-09-14: cvs - Roberto Ragusa
+   . Ooops, forgot to activate the polling on 6100L.
+
+2003-09-10: cvs - Hin-Tak Leung
+   . Added prelimary null transport skeleton code to debug bid problems.
+
+2003-09-08: cvs - Roberto Ragusa
+   . Added epl_61interpret.c.
+   . First attempt to do (free mem) flow control on 6100L.
+
+2003-09-04: cvs - Roberto Ragusa
+   . Unified all sleeping functions into sleep_seconds(double s).
+   . We try to accurately detect how big is the buffer of the printer
+     (this will be useful for future enhancements).
+   . Flow control is now more cleanly integrated. At the moment
+     there are two speed limiters: a stripe to stripe delay
+     (used only for 5700L) and a closed-loop free mem delay
+     (5800L, 5900L only; it should work for 5700L too but it's
+     disabled because htl doesn't want it :-) ).
+   . The free mem flow control now uses a better estimation
+     algorithm.
+   . Small misc fixes (code style, debug output).
+   . Added epl_time.c, a lot of code has been moved around.
+
+2003-07-18: cvs - Hin-Tak Leung
+   . fixing the autoconf code to detect correctly kernel versions of the form
+     "2.4.21-0.13mdk" (extra dot) reported for mandrake 9.x.  
+
+2003-05-07: cvs - Roberto Ragusa
+   . Small fixes.
+
+2003-05-04: cvs - Roberto Ragusa
+   . Misc fixes to epl_59interpret.c, epl_bid_replies.c and docs.
+   . Added README.FlowControl.
+
+2003-05-04: cvs - Hin-Tak Leung
+   . 2nd try at fixing libieee1284 memory allocation problem, + misc.
+
+2003-05-02: cvs - Hin-Tak Leung
+   . fix libieee1284 memory allocation problem.
+
+2003-05-01: cvs - Roberto Ragusa
+   . Foomatic fixes again, created installation scripts.
+
+2003-04-30: cvs - Roberto Ragusa
+   . Misc foomatic fixes.
+
+2003-04-28: cvs - Hin-Tak Leung
+   * Changed "--with-kerneldevice" to "--with-kernelusb" for configure. 
+   . Also changed all "HAVE_KERNEL_DEVICE" to "HAVE_KERNEL_USB_DEVICE" 
+        internally.
+
+2003-04-27: cvs - Roberto Ragusa
+   . New options added to foomatic and ps2epl.
+   . Misc little fixes.
+
+2003-04-26: cvs - Hin-Tak Leung
+   . Added kernel mode and user mode bidirectional parallel port support,
+        new configure option: --with-kernel1284,--with-libieee1284
+   . Renamed files and variables from *usb* to *bid*.
+   . Experimental status/toner info retrieval when the plugin is run standalone
+
+2003-04-12: cvs - Roberto Ragusa
+   . epl_usb_replies_size array switched to a function.
+   . Misc fixes and polishing.
+
+2003-04-11: cvs - Roberto Ragusa
+   . Added adaptive flow control algorithm for 5800L/5900L/6100L
+     (5700L unchanged). It appears to be rock solid, according to
+     first tests.
+   . Printer replies are now interpreted and logged (if debug is on) for
+     5800L/5900L. 5700L and 6100L need some work to implement that.
+   . epl_test.sh can be run without having to "make install".
+   . Misc fixes and moved some code around.
+
+2003-04-10: cvs - Roberto Ragusa
+   . Direct USB ("FlowControl") is now available for all printers.
+   . Better detection of USB printers.
+   . Misc changes to prepare the introduction of a new flow control
+     algorithm.
+
+2003-04-08: cvs - Roberto Ragusa
+   . Better foomatic support for 6100L.
+
+2003-04-03: 0.3.0 - Hin-Tak Leung
+   . Minor change to overflow work around, and bumped version up to 0.3.0.
+
+2003-04-02: cvs - Hin-Tak Leung
+   . Header/footer re-organization to add preliminary 6100L support. 
+       Regression-tested 57/58/59 spool file generation.
+
+2003-03-21: cvs - Roberto Ragusa
+   . !!Changed parameter name!!:
+        The "USB" parameter is now called "FlowControl".
+   . FlowControl option added to foomatic (5700L only).
+   . Fixed Density default (now 3 for 5700L/5800L too).
+
+2003-03-18: cvs - Hin-Tak Leung
+   . Updated flow-control timing code. Can do 20 pages via libusb now.
+   . removed some over-verbose debug outputs, added page number output.
+   . Added apsfilter contrib setup.
+
+2003-03-13: cvs - Roberto Ragusa
+   . Compilation options in epl_config.h.
+   . Protocol changes to work around printer crashes.
+   . Removed epsonepl-PrintoutMode.xml composite option.
+   . Misc fixes.
+
+2003-03-10: cvs - Roberto Ragusa
+   . Modifications to the foomatic stuff and spec file.
+
+2003-02-28: cvs - Hin-Tak Leung
+   . Merged in USB-related code, 
+        configure now accepts --with-kerneldevice,--with-libusb
+   . documentation update regarding USB and the 4-bit code.
+   * !!Changed behavior!!:
+        reverting "USB=on" in ps2epl to "off", as there is now
+        two ways of doing 5700L USB printing.
+
+2003-02-05: 0.2.2 - Roberto Ragusa, Hin-Tak Leung
+   . Maintainence update to 0.2, released as rpm.
+
+2003-02-04: 0.2.1usb - Hin-Tak Leung
+   . rpm's available for the first time
+   . bundling PPD files and some e-mails from the mailing list with tips
+
+2003-02-02: 4-bit codes - Roberto Ragusa
+   . Meaning of the 4 bit codes finally discovered.
+   . The 4 bit codes are now used.
+
+2003-02-01: 0.2usb - Hin-Tak Leung
+   . Printing to 5700L via USB now works. Added "USB=on/off" IjsParam.
+   . Grafted a 2003-01-25 CVS snapshot of libusb plus minor customization.
+   . Minor changes in various documentation.
+   . Added minimal FAQ.
+   * !!Changed behavior!!: 
+        ps2epl now has "TonerSave=on", and also "USB=on" for 5700L.  
+        All users should try to use CUPS/etc, while the script should be 
+        reserved for testing purposes. Edit to get old behaviour. 
+
+2003-01-28: 0.2 - misc fixes - Roberto Ragusa
+   . Foomatic .xml files now compatible with cups.
+   . 5800L footers fixed.
+
+2003-01-22: 0.1e - foomatic data - Roberto Ragusa
+   . Added foomatic .xml files.
+   . Makefile.in: reenabled example server/client compilation,
+     fixed install section.
+   . Simplified headers/footers handling.
+
+2003-01-16: 0.1d - papersize, dpi, options support - Roberto Ragusa
+   . Many printing parameters are now definable in ps2epl
+     (papersize, dpi, ritech, tonersave, density).
+   . Improved error checking.
+   . Misc fixes and clean up.
+   . Makefile.in: compiler optimizations turned on, only
+     compile ijs_server_epsonepl.
+
+2003-01-13: headers and footers reorg - Roberto Ragusa
+   . Fixes 5800L/5900L? Breaks 5700L? :-)
+
+2003-01-12: 5700L multi-page fix - Hin-Tak Leung  
+   . Breaks 5800L/5900L. Careful.
+
+2003-01-09: version 0.1 - Hin-Tak Leung
+   . Test Release
